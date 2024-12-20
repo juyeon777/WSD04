@@ -1,0 +1,31 @@
+name: Git Flow Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/*'
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  validate-branch:
+    name: Validate Branch Naming
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Validate Branch Name
+        run: |
+          echo "Validating branch naming conventions..."
+          BRANCH_NAME="${{ github.ref_name }}"
+          if [[ "$BRANCH_NAME" == "main" || "$BRANCH_NAME" == "develop" || "$BRANCH_NAME" =~ ^feature/.* ]]; then
+            echo "✅ Branch name '$BRANCH_NAME' is valid."
+          else
+            echo "❌ Branch name '$BRANCH_NAME' is invalid. Follow Git Flow naming conventions."
+            exit 1
+          fi
