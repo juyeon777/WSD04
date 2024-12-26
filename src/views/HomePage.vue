@@ -161,7 +161,15 @@ export default {
     },
   },
   async created() {
+      try {
     await this.fetchMovies();
+    console.log("영화 데이터 로드 완료:", {
+      nowPlaying: this.nowPlayingMovies,
+      popular: this.popularMovies,
+    });
+  } catch (error) {
+    console.error("영화 데이터를 로드하는 중 오류:", error);
+  }
   },
   mounted() {
     setTimeout(() => {

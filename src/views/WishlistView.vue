@@ -4,8 +4,14 @@
     <h1 :class="{ 'main-title': true, show: titleVisible }">
       🎥 내가 찜한 콘텐츠
     </h1>
+
+    <!-- 로그인 확인 -->
+    <div v-if="!isLoggedIn" class="login-message">
+      <p>로그인 후 이용 가능합니다.</p>
+    </div>
+
     <!-- 찜한 콘텐츠가 없을 경우 -->
-    <div v-if="wishlist.length === 0" class="empty-message">
+    <div v-else-if="wishlist.length === 0" class="empty-message">
       <p>찜한 콘텐츠가 없습니다.</p>
     </div>
 
@@ -36,6 +42,7 @@ export default {
   data() {
     return {
       wishlist: [], // 찜한 영화 데이터
+      isLoggedIn: false, // 로그인 상태
       titleVisible: false, // 타이틀 표시 여부
     };
   },
@@ -51,9 +58,16 @@ export default {
       localStorage.setItem("wishlist", JSON.stringify(this.wishlist));
       alert("찜한 콘텐츠가 삭제되었습니다.");
     },
+    // 로그인 상태 확인
+    checkLoginStatus() {
+      this.isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    },
   },
   mounted() {
-    this.loadWishlist();
+    this.checkLoginStatus();
+    if (this.isLoggedIn) {
+      this.loadWishlist();
+    }
     setTimeout(() => {
       this.titleVisible = true; // 타이틀 표시
     }, 500); // 0.5초 후 타이틀 표시
@@ -84,6 +98,12 @@ export default {
 .main-title.show {
   opacity: 1;
   transform: translateY(0); /* 제자리로 이동 */
+}
+
+/* 로그인 안내 메시지 */
+.login-message {
+  color: #888;
+  font-size: 1.2rem;
 }
 
 /* 찜한 콘텐츠가 없을 때 메시지 */
