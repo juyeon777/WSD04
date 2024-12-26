@@ -63,11 +63,16 @@ export default {
       this.isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     },
   },
+  watch: {
+    isLoggedIn(newStatus) {
+      if (newStatus) {
+        this.loadWishlist(); // 로그인 상태가 변경되면 찜한 콘텐츠 로드
+      }
+    },
+  },
   mounted() {
     this.checkLoginStatus();
-    if (this.isLoggedIn) {
-      this.loadWishlist();
-    }
+    this.loadWishlist(); // 초기 로드 시 찜 리스트 로드
     setTimeout(() => {
       this.titleVisible = true; // 타이틀 표시
     }, 500); // 0.5초 후 타이틀 표시

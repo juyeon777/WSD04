@@ -66,7 +66,6 @@ export default {
         // 3. Vue 상태 초기화
         this.isLoggedIn = false;
         this.loggedInUser = "";
-        this.wishlist = []; // 찜 데이터 초기화
 
         // 4. 홈 화면으로 이동
         alert("로그아웃되었습니다. 모든 정보가 초기화됩니다.");
